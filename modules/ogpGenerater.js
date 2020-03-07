@@ -29,7 +29,7 @@ const generateOGP = function() {
 }
 
 module.exports = function() {
-  this.nuxt.hook('generate:done', (generator) => {
+  this.nuxt.hook('generate:before', (generator) => {
     // eslint-disable-next-line no-console
     console.log('OgpGenerater:start')
     generateOGP()
