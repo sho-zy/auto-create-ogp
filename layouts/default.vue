@@ -1,9 +1,37 @@
 <template>
   <div>
+    <header>
+      <ul>
+        <li v-for="(item, i) in menuItems" :key="i">
+          <nuxt-link :to="item.to" v-text="item.name" />
+        </li>
+      </ul>
+    </header>
     <nuxt />
   </div>
 </template>
-
+<script>
+export default {
+  data() {
+    return {
+      menuItems: [
+        {
+          name: 'HOME',
+          to: '/'
+        },
+        {
+          name: 'PAGE1',
+          to: '/page1'
+        },
+        {
+          name: 'PAGE2',
+          to: '/page2'
+        }
+      ]
+    }
+  }
+}
+</script>
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -51,5 +79,27 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+
+header {
+  background-color: black;
+  height: 64px;
+}
+
+header ul {
+  display: flex;
+  height: 100%;
+}
+
+header ul li {
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  height: 100%;
+}
+
+header ul li a {
+  color: white;
+  text-decoration: none;
 }
 </style>
