@@ -1,5 +1,5 @@
 export default {
-  mode: 'spa',
+  mode: 'universal',
   /*
    ** Headers of the page
    */
@@ -50,5 +50,25 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  },
+  generate: {
+    routes() {
+      const routes = []
+      const fs = require('fs')
+      const fileNames = fs.readdirSync('./data')
+      for (const key in fileNames) {
+        const page = JSON.parse(
+          fs.readFileSync('./data/' + fileNames[key], 'utf8')
+        )
+        routes.push({
+          route: '/' + page.slug,
+          payload: page
+        })
+      }
+      return routes
+    }
   }
 }

@@ -2,7 +2,7 @@
   <div class="container">
     <div>
       <p>
-        <img :src="'./img/' + page.thumbnail" />
+        <img :src="baseUrl + '/img/' + page.thumbnail" />
       </p>
       <hr />
       <h1 class="title">
@@ -10,7 +10,7 @@
       </h1>
       <hr />
       <p>
-        <img :src="'./ogp/' + page.slug + '.png'" />
+        <img :src="baseUrl + '/ogp/' + page.slug + '.png'" />
       </p>
     </div>
   </div>
@@ -18,15 +18,17 @@
 
 <script>
 export default {
-  data() {
-    return {
-      page: [],
-      hostname: ''
+  async asyncData({ params, error, payload }) {
+    if (payload) {
+      return { page: payload }
+    } else {
+      return { page: await require(`~/data/${params.slug}.json`) }
     }
   },
-  created() {
-    this.page = require(`~/data/${this.$nuxt.$route.params.slug}.json`)
-    this.hostname = location.protocol + '//' + location.hostname
+  data() {
+    return {
+      baseUrl: process.env.baseUrl
+    }
   },
   head() {
     return {
@@ -50,7 +52,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: this.hostname + '/' + this.page.slug + '/'
+          content: this.baseUrl + '/' + this.page.slug + '/'
         },
         {
           hid: 'og:description',
@@ -60,7 +62,7 @@ export default {
         {
           hid: 'og:image',
           property: 'og:image',
-          content: this.hostname + '/ogp/' + this.page.slug + '.png'
+          content: this.baseUrl + '/ogp/' + this.page.slug + '.png'
         },
         {
           hid: 'twitter:card',
